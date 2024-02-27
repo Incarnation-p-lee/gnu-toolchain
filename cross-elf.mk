@@ -5,8 +5,21 @@ NEWLIB_SRC_DIR=$(ROOT_DIR)/newlib
 DEJAGNU_SRC_DIR=$(ROOT_DIR)/dejagnu
 QEMU_SRC_DIR=$(ROOT_DIR)/qemu
 
-TARGET=aarch64-unknown-elf
-WIDTH_ARCH=armv8.2-a+sve
+ifndef TARGET
+	TARGET := arch64-unknown-elf
+endif
+
+ifndef
+	ARCH := armv8.2-a+sve
+endif
+
+ifndef
+	BOARD := aarch64-sim
+endif
+
+ifndef
+	QEMU_TARGET_LIST := aarch64-linux-user
+endif
 
 ifndef DATE
 	DATE := $(shell date +%Y_%m_%d_%H_%M_%S)
@@ -62,7 +75,7 @@ $(BUILD_DIR)/build-gcc-stage1: $(BUILD_DIR)/build-binutils
 		--disable-tm-clone-registry \
 		--src=$(GCC_SRC_DIR) \
 		--disable-multilib \
-		--with-arch=$(WIDTH_ARCH) \
+		--with-arch=$(ARCH) \
 		--with-pkgversion=GNU \
 		CFLAGS="-O0 -g3" \
 		CXXFLAGS="-O0 -g3" \
@@ -109,7 +122,7 @@ $(BUILD_DIR)/build-gcc-stage2: $(BUILD_DIR)/build-newlib
 		--disable-tm-clone-registry \
 		--src=$(GCC_SRC_DIR) \
 		--disable-multilib \
-		--with-arch=$(WIDTH_ARCH) \
+		--with-arch=$(ARCH) \
 		--with-pkgversion=GNU \
 		CFLAGS="-O0 -g3" \
 		CXXFLAGS="-O0 -g3" \
@@ -130,11 +143,12 @@ $(BUILD_DIR)/build-qemu: prefix
 	mkdir $@
 	cd $@ && $(QEMU_SRC_DIR)/configure \
 		--prefix=$(PREFIX) \
-		--target-list=aarch64-linux-user \
+		--target-list=$(QEMU_TARGET_LIST) \
 		--interp-prefix=$(PREFIX)/sysroot \
 		--python=python3
 	$(MAKE) -C $@
 	$(MAKE) -C $@ install
 
 test: $(BUILD_DIR)/build-gcc-stage2 $(BUILD_DIR)/build-dejagnu $(BUILD_DIR)/build-qemu
-	$(SIM_PREPARE) $(MAKE) -C $(BUILD_DIR)/build-gcc-stage2 check-gcc RUNTESTFLAGS="--target_board=aarch64-sim"
+	$(SIM_PREPARE) $(MAKE) -C $(BUILD_DIR)/build-gcc-stage2 \
+          check-gcc RUNTESTFLAGS="--target_board=$(BOARD)"

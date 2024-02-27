@@ -20,6 +20,7 @@ $(BUILD_DIR)/build-gcc: prefix
 	mkdir $@
 	cd $@ && $(GCC_SRC_DIR)/configure \
 		--prefix=$(PREFIX) \
+		--enable-languages=c,c++,fortran \
 		--disable-multilib \
 		CFLAGS="-O0 -g3" \
 		CXXFLAGS="-O0 -g3" \
@@ -34,6 +35,7 @@ $(BUILD_DIR)/build-test-gcc: prefix
 	mkdir $@
 	cd $@ && $(GCC_SRC_DIR)/configure \
 		--prefix=$(PREFIX) \
+		--enable-languages=c,c++,fortran \
 		--disable-multilib \
 		CFLAGS="-O0 -g3" \
 		CXXFLAGS="-O0 -g3" \
