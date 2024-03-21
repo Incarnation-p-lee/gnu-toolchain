@@ -44,10 +44,16 @@ clean:
 	rm -rf output
 
 update-gcc:
-	cd gcc && git remote update && git reset --hard origin/master
+	cd gcc \
+          && git clean -f \
+          && git remote update \
+          && git reset --hard origin/master
 
 update-golden-gcc: update-gcc
-	cd golden-gcc && git remote update && git reset --hard origin/master
+	cd gcc \
+          && git clean -f \
+          && git remote update \
+          && git reset --hard origin/master
 
 update-to-trunk: update-golden-gcc
 
