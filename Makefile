@@ -50,7 +50,7 @@ update-gcc:
           && git reset --hard origin/master
 
 update-golden-gcc: update-gcc
-	cd gcc \
+	cd golden-gcc \
           && git clean -f \
           && git remote update \
           && git reset --hard origin/master
@@ -75,6 +75,7 @@ build-test-gcc-aarch64:
           ARCH=armv8.2-a+sve \
           BOARD=aarch64-sim \
           QEMU_TARGET_LIST=aarch64-linux-user \
+          GCC_SRC_DIR=$(ROOT_DIR)/gcc \
           build-test
 
 build-test-golden-gcc-aarch64: build-test-gcc-aarch64
@@ -99,6 +100,7 @@ build-test-gcc-riscv64:
           ARCH=rv64gcv \
           BOARD=riscv-sim \
           QEMU_TARGET_LIST=riscv64-linux-user \
+          GCC_SRC_DIR=$(ROOT_DIR)/gcc \
           build-test
 
 build-test-golden-gcc-riscv64: build-test-gcc-riscv64
