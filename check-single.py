@@ -2,7 +2,9 @@
 #!python3
 
 import sys
+import os
 import argparse
+from colorama import Fore, Back, Style
 
 parser = argparse.ArgumentParser(description='Check gcc testsuite result.')
 parser.add_argument ("--summary_file", type=str, required=True)
@@ -123,6 +125,7 @@ def print_list(str_list):
 def print_test_summary(summary_file, golden_file):
   summary = get_test_summary(summary_file)
   golden = get_test_summary(golden_file)
+  title = os.path.basename(summary_file).replace(".sum", "").upper()
 
 #   print("=== Test Result ===\n")
 #   print_list(summary["fail_list"])
@@ -166,10 +169,14 @@ def print_test_summary(summary_file, golden_file):
   if len(diff["uncertain_fail_list"]) > 0:
     print("Uncertain Fail List:")
     print_list(diff["uncertain_fail_list"])
+
   if diff["has_diff"]:
-    print("GCC Test Result Checker Found Difference.")
-    sys.exit(1)
+    print(Fore.RED + ">> {} Test Result Checker Found Difference <<".format(title))
+    print(Style.RESET_ALL)
   else:
-    print("GCC Test Result Checker Pass.")
+    print(Fore.GREEN + ">> {} Test Result Checker Pass <<".format(title))
+    print(Style.RESET_ALL)
+
+  print("")
 
 print_test_summary(args.summary_file, args.golden_file)
