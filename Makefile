@@ -4,12 +4,12 @@ PREFIX ?= $(ROOT_DIR)/output
 all: build-gcc build-gdb build-binutils
 
 ifndef AARCH64_ARCH
-	AARCH64_ARCH := armv8.2-a+sve
+  AARCH64_ARCH := armv8.2-a+sve
 endif
 
 ifndef RISCV_ARCH
-	RISCV_ARCH := rv64gcv
-endif RISCV_ARCH
+  RISCV_ARCH := rv64gcv
+endif
 
 build-gdb: clean
 	mkdir -p build/$@

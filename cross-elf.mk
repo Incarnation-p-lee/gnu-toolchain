@@ -6,23 +6,23 @@ DEJAGNU_SRC_DIR=$(ROOT_DIR)/dejagnu
 QEMU_SRC_DIR=$(ROOT_DIR)/qemu
 
 ifndef TARGET
-	TARGET := arch64-unknown-elf
+  TARGET := arch64-unknown-elf
 endif
 
-ifndef
-	ARCH := armv8.2-a+sve
+ifndef ARCH
+  ARCH := armv8.2-a+sve
 endif
 
-ifndef
-	BOARD := aarch64-sim
+ifndef BOARD
+  BOARD := aarch64-sim
 endif
 
-ifndef
-	QEMU_TARGET_LIST := aarch64-linux-user
+ifndef QEMU_TARGET_LIST
+  QEMU_TARGET_LIST := aarch64-linux-user
 endif
 
 ifndef DATE
-	DATE := $(shell date +%Y_%m_%d_%H_%M_%S)
+  DATE := $(shell date +%Y_%m_%d_%H_%M_%S)
 endif
 
 BUILD_DIR := $(shell pwd)/build/build-$(TARGET)-$(DATE)
