@@ -119,56 +119,34 @@ def check_test_summary(summary, golden):
     "uncertain_fail_list": current_uncertain_fail_list
   }
 
-def print_list(str_list):
-  print("".join(str_list))
+def print_diff_list(color, diff_list, list_name):
+  if len(diff_list[list_name]) > 0:
+    print("{}:".format(list_name.replace("_", " ").upper()))
+    print(color + "".join(diff_list[list_name]))
+    print(Style.RESET_ALL)
 
 def print_test_summary(summary_file, golden_file):
   summary = get_test_summary(summary_file)
   golden = get_test_summary(golden_file)
   title = os.path.basename(summary_file).replace(".sum", "").upper()
 
-#   print("=== Test Result ===\n")
-#   print_list(summary["fail_list"])
-#   print_list(summary["xpass_list"])
-#   print_list(summary["summary"])
-
   diff = check_test_summary(summary, golden)
   if (diff["has_diff"]):
     print("=== Test Diff ===\n")
-    if len(diff["increased_fail_list"]) > 0:
-      print("Increased FAIL List:")
-      print_list(diff["increased_fail_list"])
-    if len(diff["reduced_fail_list"]) > 0:
-      print("Reduced FAIL List:")
-      print_list(diff["reduced_fail_list"])
-    if len(diff["increased_xpass_list"]) > 0:
-      print("Increased XPASS List:")
-      print_list(diff["increased_xpass_list"])
-    if len(diff["reduced_xpass_list"]) > 0:
-      print("Reduced XPASS List:")
-      print_list(diff["reduced_xpass_list"])
-    if len(diff["increased_unresolved_list"]) > 0:
-      print("Increased UNRESOLVED List:")
-      print_list(diff["increased_unresolved_list"])
-    if len(diff["reduced_unresolved_list"]) > 0:
-      print("Reduced UNRESOLVED List:")
-      print_list(diff["reduced_unresolved_list"])
-    if len(diff["increased_unsupported_list"]) > 0:
-      print("Increased UNSUPPORTED List:")
-      print_list(diff["increased_unsupported_list"])
-    if len(diff["reduced_unsupported_list"]) > 0:
-      print("Reduced UNSUPPORTED List:")
-      print_list(diff["reduced_unsupported_list"])
-    if len(diff["increased_error_list"]) > 0:
-      print("Increased ERROR List:")
-      print_list(diff["increased_error_list"])
-    if len(diff["reduced_error_list"]) > 0:
-      print("Reduced ERROR List:")
-      print_list(diff["reduced_error_list"])
 
-  if len(diff["uncertain_fail_list"]) > 0:
-    print("Uncertain Fail List:")
-    print_list(diff["uncertain_fail_list"])
+    print_diff_list(Fore.RED, diff, "increased_fail_list")
+    print_diff_list(Fore.RED, diff, "increased_xpass_list")
+    print_diff_list(Fore.RED, diff, "increased_unresolved_list")
+    print_diff_list(Fore.RED, diff, "increased_unsupported_list")
+    print_diff_list(Fore.RED, diff, "increased_error_list")
+
+    print_diff_list(Fore.GREEN, diff, "reduced_fail_list")
+    print_diff_list(Fore.GREEN, diff, "reduced_xpass_list")
+    print_diff_list(Fore.GREEN, diff, "reduced_unresolved_list")
+    print_diff_list(Fore.GREEN, diff, "reduced_unsupported_list")
+    print_diff_list(Fore.GREEN, diff, "reduced_error_list")
+
+  print_diff_list(Fore.CYAN, diff, "uncertain_fail_list")
 
   if diff["has_diff"]:
     print(Fore.RED + ">> {} Test Result Checker Found Difference <<".format(title))
@@ -177,6 +155,6 @@ def print_test_summary(summary_file, golden_file):
     print(Fore.GREEN + ">> {} Test Result Checker Pass <<".format(title))
     print(Style.RESET_ALL)
 
-  print("")
+  print("=== Test Summary End ===\n")
 
 print_test_summary(args.summary_file, args.golden_file)

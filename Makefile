@@ -3,6 +3,14 @@ PREFIX ?= $(ROOT_DIR)/output
 
 all: build-gcc build-gdb build-binutils
 
+ifndef AARCH64_ARCH
+	AARCH64_ARCH := armv8.2-a+sve
+endif
+
+ifndef RISCV_ARCH
+	RISCV_ARCH := rv64gcv
+endif RISCV_ARCH
+
 build-gdb: clean
 	mkdir -p build/$@
 	cd build/$@ && ../../binutils/configure \
@@ -72,7 +80,7 @@ build-test-gcc-aarch64:
 	$(MAKE) -f cross-elf.mk \
           DATE=gcc-aarch64 \
           TARGET=aarch64-unknown-elf \
-          ARCH=armv8.2-a+sve \
+          ARCH=$(AARCH64_ARCH) \
           BOARD=aarch64-sim \
           QEMU_TARGET_LIST=aarch64-linux-user \
           GCC_SRC_DIR=$(ROOT_DIR)/gcc \
@@ -82,7 +90,7 @@ build-test-golden-gcc-aarch64: build-test-gcc-aarch64
 	$(MAKE) -f cross-elf.mk \
           DATE=golden-gcc-aarch64 \
           TARGET=aarch64-unknown-elf \
-          ARCH=armv8.2-a+sve \
+          ARCH=$(AARCH64_ARCH) \
           BOARD=aarch64-sim \
           QEMU_TARGET_LIST=aarch64-linux-user \
           GCC_SRC_DIR=$(ROOT_DIR)/golden-gcc \
@@ -97,7 +105,7 @@ build-test-gcc-riscv64:
 	$(MAKE) -f cross-elf.mk \
           DATE=gcc-riscv64 \
           TARGET=riscv64-unknown-elf \
-          ARCH=rv64gcv \
+          ARCH=$(RISCV_ARCH) \
           BOARD=riscv-sim \
           QEMU_TARGET_LIST=riscv64-linux-user \
           GCC_SRC_DIR=$(ROOT_DIR)/gcc \
@@ -107,7 +115,7 @@ build-test-golden-gcc-riscv64: build-test-gcc-riscv64
 	$(MAKE) -f cross-elf.mk \
           DATE=golden-gcc-riscv64 \
           TARGET=riscv64-unknown-elf \
-          ARCH=rv64gcv \
+          ARCH=$(RISCV_ARCH) \
           BOARD=riscv-sim \
           QEMU_TARGET_LIST=riscv64-linux-user \
           GCC_SRC_DIR=$(ROOT_DIR)/golden-gcc \
