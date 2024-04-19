@@ -101,6 +101,11 @@ test-aarch64: build-test-gcc-aarch64 build-test-golden-gcc-aarch64
           --golden_dir build/build-aarch64-unknown-elf-golden-gcc-aarch64/build-gcc-stage2/gcc/testsuite \
           --test_dir   build/build-aarch64-unknown-elf-gcc-aarch64/build-gcc-stage2/gcc/testsuite
 
+test-aarch64-cached: build-test-gcc-aarch64
+	python3 ./check.py \
+          --golden_dir build/build-aarch64-unknown-elf-golden-gcc-aarch64/build-gcc-stage2/gcc/testsuite \
+          --test_dir   build/build-aarch64-unknown-elf-gcc-aarch64/build-gcc-stage2/gcc/testsuite
+
 build-test-gcc-riscv64:
 	$(MAKE) -f cross-elf.mk \
           DATE=gcc-riscv64 \
@@ -122,6 +127,11 @@ build-test-golden-gcc-riscv64: build-test-gcc-riscv64
           build-test
 
 test-riscv64: build-test-gcc-riscv64 build-test-golden-gcc-riscv64
+	python3 ./check.py \
+          --golden_dir build/build-riscv64-unknown-elf-golden-gcc-riscv64/build-gcc-stage2/gcc/testsuite \
+          --test_dir   build/build-riscv64-unknown-elf-gcc-riscv64/build-gcc-stage2/gcc/testsuite
+
+test-riscv64-cached: build-test-gcc-riscv64
 	python3 ./check.py \
           --golden_dir build/build-riscv64-unknown-elf-golden-gcc-riscv64/build-gcc-stage2/gcc/testsuite \
           --test_dir   build/build-riscv64-unknown-elf-gcc-riscv64/build-gcc-stage2/gcc/testsuite
