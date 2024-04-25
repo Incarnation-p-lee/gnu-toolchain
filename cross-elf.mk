@@ -77,10 +77,10 @@ $(BUILD_DIR)/build-gcc-stage1: $(BUILD_DIR)/build-binutils
 		--disable-multilib \
 		--with-arch=$(ARCH) \
 		--with-pkgversion=GNU \
-		CFLAGS="-O0 -g3" \
-		CXXFLAGS="-O0 -g3" \
-		CFLAGS_FOR_TARGET="-Os" \
-		CXXFLAGS_FOR_TARGET="-Os"
+		CFLAGS="-O2" \
+		CXXFLAGS="-O2" \
+		CFLAGS_FOR_TARGET="-O2" \
+		CXXFLAGS_FOR_TARGET="-O2"
 	$(MAKE) -C $@ all-gcc
 	$(MAKE) -C $@ install-gcc
 
@@ -124,10 +124,10 @@ $(BUILD_DIR)/build-gcc-stage2: $(BUILD_DIR)/build-newlib
 		--disable-multilib \
 		--with-arch=$(ARCH) \
 		--with-pkgversion=GNU \
-		CFLAGS="-O0 -g3" \
-		CXXFLAGS="-O0 -g3" \
-		CFLAGS_FOR_TARGET="-Os" \
-		CXXFLAGS_FOR_TARGET="-Os"
+		CFLAGS="-O2" \
+		CXXFLAGS="-O2" \
+		CFLAGS_FOR_TARGET="-O2" \
+		CXXFLAGS_FOR_TARGET="-O2"
 	$(MAKE) -C $@
 	$(MAKE) -C $@ install
 	echo "Build Success."
