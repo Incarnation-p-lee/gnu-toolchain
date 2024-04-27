@@ -108,7 +108,7 @@ $(BUILD_DIR)/build-gcc-stage2: $(BUILD_DIR)/build-newlib
 		--prefix=$(PREFIX) \
 		--disable-shared \
 		--disable-threads \
-		--enable-languages=c,c++ \
+		--enable-languages=c,c++,fortran \
 		--with-system-zlib \
 		--enable-tls \
 		--with-newlib \
