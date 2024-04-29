@@ -125,20 +125,25 @@ def print_diff_list(color, diff_list, list_name):
     print(color + "".join(diff_list[list_name]))
     print(Style.RESET_ALL)
 
+    return True
+
+  return False
+
 def print_test_summary(summary_file, golden_file):
   summary = get_test_summary(summary_file)
   golden = get_test_summary(golden_file)
   title = os.path.basename(summary_file).replace(".sum", "").upper()
-
   diff = check_test_summary(summary, golden)
+  increased = False
+
   if (diff["has_diff"]):
     print("=== Test Diff ===\n")
 
-    print_diff_list(Fore.RED, diff, "increased_fail_list")
-    print_diff_list(Fore.RED, diff, "increased_xpass_list")
-    print_diff_list(Fore.RED, diff, "increased_unresolved_list")
-    print_diff_list(Fore.RED, diff, "increased_unsupported_list")
-    print_diff_list(Fore.RED, diff, "increased_error_list")
+    increased = increased or print_diff_list(Fore.RED, diff, "increased_fail_list")
+    increased = increased or print_diff_list(Fore.RED, diff, "increased_xpass_list")
+    increased = increased or print_diff_list(Fore.RED, diff, "increased_unresolved_list")
+    increased = increased or print_diff_list(Fore.RED, diff, "increased_unsupported_list")
+    increased = increased or print_diff_list(Fore.RED, diff, "increased_error_list")
 
     print_diff_list(Fore.GREEN, diff, "reduced_fail_list")
     print_diff_list(Fore.GREEN, diff, "reduced_xpass_list")
@@ -148,7 +153,7 @@ def print_test_summary(summary_file, golden_file):
 
   print_diff_list(Fore.CYAN, diff, "uncertain_fail_list")
 
-  if diff["has_diff"]:
+  if diff["has_diff"] and increased:
     print(Fore.RED + ">> {} Test Result Checker Found Difference <<".format(title))
     print(Style.RESET_ALL)
   else:
