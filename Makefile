@@ -71,7 +71,7 @@ build-test-gcc-x86:
 build-test-golden-gcc-x86: build-test-gcc-x86
 	$(MAKE) -f native.mk DATE=golden-gcc-x86 GCC_SRC_DIR=$(ROOT_DIR)/golden-gcc build-test
 
-test: build-test-gcc-x86 build-test-golden-gcc-x86
+test: build-test-golden-gcc-x86 build-test-gcc-x86
 	python3 ./check.py \
           --golden_dir build/build-native-golden-gcc-x86/build-test-gcc/gcc/testsuite \
           --test_dir   build/build-native-gcc-x86/build-test-gcc/gcc/testsuite
@@ -96,7 +96,7 @@ build-test-golden-gcc-aarch64: build-test-gcc-aarch64
           GCC_SRC_DIR=$(ROOT_DIR)/golden-gcc \
           build-test
 
-test-aarch64: build-test-gcc-aarch64 build-test-golden-gcc-aarch64
+test-aarch64: build-test-golden-gcc-aarch64 build-test-gcc-aarch64
 	python3 ./check.py \
           --golden_dir build/build-aarch64-unknown-elf-golden-gcc-aarch64/build-gcc-stage2/gcc/testsuite \
           --test_dir   build/build-aarch64-unknown-elf-gcc-aarch64/build-gcc-stage2/gcc/testsuite
@@ -126,7 +126,7 @@ build-test-golden-gcc-riscv64: build-test-gcc-riscv64
           GCC_SRC_DIR=$(ROOT_DIR)/golden-gcc \
           build-test
 
-test-riscv64: build-test-gcc-riscv64 build-test-golden-gcc-riscv64
+test-riscv64: build-test-golden-gcc-riscv64 build-test-gcc-riscv64
 	python3 ./check.py \
           --golden_dir build/build-riscv64-unknown-elf-golden-gcc-riscv64/build-gcc-stage2/gcc/testsuite \
           --test_dir   build/build-riscv64-unknown-elf-gcc-riscv64/build-gcc-stage2/gcc/testsuite
