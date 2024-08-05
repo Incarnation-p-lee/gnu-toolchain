@@ -53,17 +53,23 @@ clean:
 
 update-gcc:
 	cd gcc \
-          && git clean -f \
-          && git remote update \
-          && git reset --hard origin/master
+          && $(reset_to_master)
 
-update-golden-gcc: update-gcc
+update-golden-gcc:
 	cd golden-gcc \
-          && git clean -f \
-          && git remote update \
-          && git reset --hard origin/master
+          && $(reset_to_master)
 
-update-to-trunk: update-golden-gcc
+update-to-trunk: update-golden-gcc update-gcc
+
+update-golden-gcc-to-commit:
+	cd golden-gcc \
+          && $(call checkout_to_commit, $(commit-id))
+
+update-gcc-to-commit:
+	cd gcc \
+          && $(call checkout_to_commit, $(commit-id))
+
+update-to-commit: update-gcc-to-commit update-golden-gcc-to-commit
 
 build-test-gcc-x86:
 	$(MAKE) -f native.mk DATE=gcc-x86 build-test
@@ -135,3 +141,15 @@ test-riscv64-cached: build-test-gcc-riscv64
 	python3 ./check.py \
           --golden_dir build/build-riscv64-unknown-elf-golden-gcc-riscv64/build-gcc-stage2/gcc/testsuite \
           --test_dir   build/build-riscv64-unknown-elf-gcc-riscv64/build-gcc-stage2/gcc/testsuite
+
+define reset_to_master
+	git clean -f \
+          && git remote update \
+          && git reset --hard origin/master
+endef
+
+define checkout_to_commit
+	git clean -f \
+          && git remote update \
+          && git checkout $(1)
+endef
