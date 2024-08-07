@@ -82,6 +82,11 @@ test: build-test-golden-gcc-x86 build-test-gcc-x86
           --golden_dir build/build-native-golden-gcc-x86/build-test-gcc/gcc/testsuite \
           --test_dir   build/build-native-gcc-x86/build-test-gcc/gcc/testsuite
 
+test-cached: build-test-gcc-x86
+	python3 ./check.py \
+          --golden_dir build/build-native-golden-gcc-x86/build-test-gcc/gcc/testsuite \
+          --test_dir   build/build-native-gcc-x86/build-test-gcc/gcc/testsuite
+
 build-test-gcc-aarch64:
 	$(MAKE) -f cross-elf.mk \
           DATE=gcc-aarch64 \
